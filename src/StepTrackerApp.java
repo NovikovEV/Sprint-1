@@ -1,27 +1,28 @@
 public class StepTrackerApp {
     public static void main(String[] args){
+        StepTracker stepTracker = new StepTracker(); //создание объекта StepTracker
 
-        StepTracker stepTracker = new StepTracker();
+        stepTracker.printMessage("Добро пожаловать в StepTracker!");
 
-        stepTracker.sayHello();
-
-        int menuItem = 0;
+        int menuItem = 0; // переменная для выбора пункта меню
 
         while (menuItem != 4){
+            //вызов меню
             stepTracker.printMenu();
+            //обработка ввода пользователя
             menuItem = stepTracker.userInput();
-
+            //работа с меню программы
             if (menuItem == 1){
-                stepTracker.setSteps();
+                stepTracker.setSteps(); // ввод количества шагов по дням за выбранный месяц
             } else if (menuItem == 2) {
-                stepTracker.getStatisticPerMonth();
+                stepTracker.getStatisticPerMonth(); // статистика за месяц
             } else if (menuItem == 3) {
-                stepTracker.setTargetSteps();
+                stepTracker.setTargetSteps(); // установка цели количества шагов
             }
 
         }
 
-        stepTracker.sayGoodbye();
+        stepTracker.printMessage("Программа завершила работу");
 
     }
 }

@@ -2,19 +2,19 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class StepTracker {
-    private int stepsTarget; //цель по шагам
+    private int stepsTarget; // цель по шагам
     private final int[][] statistic; // массив для статистики
-    private final Converter converter;
+    private final Converter converter; // объявление переменной для класса Converter
     public StepTracker(){
-        converter = new Converter();
-        statistic = new int[12][30];
-        stepsTarget = 10000;
-        //инициализация статистики
+        converter = new Converter(); // создание объекта Converter
+        statistic = new int[12][30]; // создание 2d массива
+        stepsTarget = 10000; // инициализация цели количества шагов
+        //инициализация статистики нулями
         for (int[] ints : statistic) {
             Arrays.fill(ints, 0);
         }
     }
-    public void setTargetSteps(){
+    public void setTargetSteps(){ // метод для изменения цели по количеству шагов
         System.out.print("Введите цель по количеству шагов в день: ");
         int steps = userInput();
         if (steps > 0){
@@ -22,15 +22,14 @@ public class StepTracker {
             System.out.println("Новая цель по количеству шагов в день: " + stepsTarget);
         }
     }
-    public void printMenu(){
+    public void printMenu(){ // метод для вывода меню
         System.out.println("1.\tВвести количество шагов за определённый день");
         System.out.println("2.\tНапечатать статистику за определённый месяц");
         System.out.println("3.\tИзменить цель по количеству шагов в день");
         System.out.println("4.\tВыйти из приложения");
         System.out.print("Выберете пункт меню: ");
     }
-    public void setSteps(){
-
+    public void setSteps(){ // метод для ввода количества шагов за выбранный месяц
         int month;
         int day;
         int steps;
@@ -49,7 +48,7 @@ public class StepTracker {
 
         } else System.out.println("Некорректный ввод: неверно введены месяц или день");
     }
-    public void getStatisticPerMonth(){
+    public void getStatisticPerMonth(){ // метод для вывода статистики за месяц
         StringBuilder stat = new StringBuilder();
         int series = 0;
         int longestSeries = 0;
@@ -97,13 +96,10 @@ public class StepTracker {
         System.out.println("Количество сожжённых килокалорий: " + converter.caloriesCount(stepsPerMonth));
         System.out.println("Лучшая серия (дни): " + " " + longestSeries);
     }
-    public void sayHello(){
-        System.out.println("Добро пожаловать в StepTracker!");
+    public void printMessage(String message){
+        System.out.println(message);
     }
-    public void sayGoodbye(){
-        System.out.println("Программа завершила работу");
-    }
-    public int userInput(){
+    public int userInput(){ // метод для обработки ввода пользователя
         Scanner scanner = new Scanner(System.in);
         int userInput = 0;
         try{
