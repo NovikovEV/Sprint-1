@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class StepTracker {
@@ -9,10 +8,6 @@ public class StepTracker {
         converter = new Converter(); // создание объекта Converter
         statistic = new int[12][30]; // создание 2d массива
         stepsTarget = 10000; // инициализация цели количества шагов
-        //инициализация статистики нулями
-        for (int[] ints : statistic) {
-            Arrays.fill(ints, 0);
-        }
     }
     public void setTargetSteps(){ // метод для изменения цели по количеству шагов
         System.out.print("Введите цель по количеству шагов в день: ");
@@ -49,49 +44,54 @@ public class StepTracker {
         } else System.out.println("Некорректный ввод: неверно введены месяц или день");
     }
     public void getStatisticPerMonth(){ // метод для вывода статистики за месяц
+
         StringBuilder stat = new StringBuilder();
-        int series = 0;
-        int longestSeries = 0;
-        int dayUp;
-        int stepsPerMonth = 0;
-        int maxSteps = 0;
-        int activityDays = 0;
+        int series = 0; // подсчет для лучшей серии шагов
+        int longestSeries = 0; // самая длинная серия шагов
+        int dayUp; // для вывода дней из массива
+        int stepsPerMonth = 0; // количество шагов в месяц
+        int maxSteps = 0; // максимальное количество шагов
+        int activityDays = 0; // дни активности для подсчета среднего числа шагов
+        int averageNumbersOfSteps = 0; // среднее количество шагов за месяц
 
         System.out.print("Введите месяц: ");
         int month = userInput();
         if (month > 0 && month < 30) {
             month--;
-            for(int days = 0; days < statistic[month].length; days++){
+            int[] currentMonth = statistic[month];
+
+            for(int days = 0; days < currentMonth.length; days++){
                 dayUp = days + 1;
-                stat.append(dayUp).append(" день: ").append(statistic[month][days]);
-                if (days < statistic[month].length){
+                stat.append(dayUp).append(" день: ").append(currentMonth[days]);
+                if (days < currentMonth.length - 1){
                     stat.append(", ");
                 } else stat.append(".");
 
-                stepsPerMonth += statistic[month][days]; // накопление шагов за месяц
-                if (maxSteps < statistic[month][days]) maxSteps = statistic[month][days];// максимальное количество дней
-
-                if (statistic[month][days] > 0) {
+                stepsPerMonth += currentMonth[days]; // накопление шагов за месяц
+                if (maxSteps < currentMonth[days]) maxSteps = currentMonth[days];// максимальное количество дней
+                if (currentMonth[days] > 0) {
                     activityDays++; //дни активности для вычисления среднего количества шагов
                 }
-
-                if (statistic[month][days] >= stepsTarget) {
+                if (currentMonth[days] >= stepsTarget) {
                     series++;
                     if (series > longestSeries) {
                         longestSeries = series;
                     }
-                } else if (statistic[month][days] < stepsTarget) {
+                } else if (currentMonth[days] < stepsTarget) {
                     series = 0;
                 }
-
             }
+
         } else System.out.println("Некорректный ввод: введенный месяц отридцательный или больше 30");
 
+        if (activityDays > 0){
+            averageNumbersOfSteps = stepsPerMonth/activityDays; // исключение случая деления
+        }
 
         System.out.println(stat);
         System.out.println("Количество шагов за месяц: " + stepsPerMonth);
         System.out.println("Максимальное пройденное количество шагов в месяце: " + maxSteps);
-        System.out.println("Среднее количество шагов в месяце: " + stepsPerMonth/activityDays);
+        System.out.println("Среднее количество шагов в месяце: " + averageNumbersOfSteps);
         System.out.println("Пройденная дистанция (в км): " + converter.distancePerMonth(stepsPerMonth));
         System.out.println("Количество сожжённых килокалорий: " + converter.caloriesCount(stepsPerMonth));
         System.out.println("Лучшая серия (дни): " + " " + longestSeries);
